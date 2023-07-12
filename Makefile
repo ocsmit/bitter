@@ -12,8 +12,9 @@ endif
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
 OBJECTS=$(patsubst %.c, %.o, $(SOURCES)) # list *.c -> *.o
-TARGET = tests
+TARGET = bin
 
+all: build
 
 # The first target defined in the makefile is the one
 # used when make is invoked with no argument. Given the definitions
@@ -22,17 +23,24 @@ TARGET = tests
 $(TARGET) : $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
+
+build: $(OBJECTS)
+
 # Phony means not a "real" target, it doesn't build anything
 # The phony target "clean" is used to remove all compiled object files.
 
-test: $(TARGET)
+test: $(OBJECTS) 
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	@echo
 	@echo ------------------ TEST ------------------
-	@./tests
+	@./test
+	@echo
+	-@$(MAKE) -s clean
 
-.PHONY: clean
-# clean
+.PHONY: clean check
+.SILENT: clean 
 clean:
-	rm -rf build $(OBJECTS) $(TESTS) $(TARGET)
+	rm -rf build $(OBJECTS) $(TESTS) $(TARGET) test
 	find . -name "*.gc*" -exec rm {} \;
 	rm -rf `find . -name "*.dSYM" -print` # Remove XCode junk
 
