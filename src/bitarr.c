@@ -16,7 +16,6 @@ BitArray* BitArray_calloc(unsigned int n_entries, unsigned int l)
 }
 
 void BitArray_free(BitArray *bitarr) {
-    free(bitarr->v);
     free(bitarr);
 }
 

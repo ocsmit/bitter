@@ -74,10 +74,11 @@
 typedef struct {
   unsigned int l;       // number of bits to store each value in A
   unsigned int size;    // size of each member in v
-  uint32_t v[];   // compressed version of A (v)
+  unsigned int v[];   // compressed version of A (v)
 } BitArray;
 
 
 BitArray* BitArray_calloc(unsigned int n_entries, unsigned int l);
+void BitArray_free(BitArray *bitarr);
 
 #endif // BITARR_H_
