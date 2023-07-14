@@ -11,21 +11,18 @@ BEGIN_TESTING
 // Data
 unsigned int A[10] = { 20, 18, 22, 22, 16, 21, 11, 22, 21, 21 };
 
-// == 10100 10010 10110 10110 10000 10101 01011 10110 10101 10101
-unsigned int correct_B[50] = {
-    1,0,1,0,0, 
-    1,0,0,1,0, 
-    1,0,1,1,0, 
-    1,0,1,1,0, 
-    1,0,0,0,0, 
-    1,0,1,0,1, 
-    0,1,0,1,1, 
-    1,0,1,1,0, 
-    1,0,1,0,1, 
-    1,0,1,0,1,
+/*
+* Both of binary representations of b have been flipped since when reading individual bits the most from array A, the least significant bit will be read first from each int.
+*
+* 394338780 := 1,1,1,0,1,0,1,1,0,0,0,0,1,0,1,1,0,1,0,1,1,0,1,0,0,1,0,1,0,1,0,0,
+* 177586    := 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,0,1,0,1,1,0,1,1,0,0,1,0,
+*/
+unsigned int B_sig_ordered[64] = {
+    0,0,1,0,1,0,1,0,0,1,0,1,1,0,1,0,1,1,0,1,0,0,0,0,1,1,0,1,0,1,1,1,
+    0,1,0,0,1,1,0,1,1,0,1,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-unsigned int correct_W[2] = { 2762827861, 1991065600 };
+unsigned int correct_W[2] = { 3943389780, 177586} ;
 
 BitArray* bit_arr = BitArray_calloc(2, 5);
 
@@ -59,49 +56,50 @@ TEST("BitArray calloc") {
 
 TEST("single bit read") {
     unsigned int b;
-    for (unsigned int i = 0; i < 50; ++i) {
+    for (unsigned int i = 0; i < 64; ++i) {
         // if (i % 5 == 0) printf(" ");
         b = BitArray_bitread(bit_arr, i);
-        // printf("%d", b);
-        assert(b == correct_B[i]);
+        printf("%d %d %d\n", i, B_sig_ordered[i], b);
+        assert(b == B_sig_ordered[i]);
     }
-    // printf("\n");
     printf("✔ bit read passed\n");
 }
 
 TEST("bit set & clear") {
-    unsigned int og_bit, nu_bit;
-    og_bit = BitArray_bitread(bit_arr, 0);
+    unsigned int og_bit, nu_bit, idx;
+    idx = 2;
+    og_bit = BitArray_bitread(bit_arr, 2);
     
     // 1 -> 1
-    BitArray_bitset(bit_arr, 0);
-    nu_bit = BitArray_bitread(bit_arr, 0);
+    BitArray_bitset(bit_arr, idx);
+    nu_bit = BitArray_bitread(bit_arr, idx);
     assert((og_bit & nu_bit) == 1);
 
     // 1 -> 0
-    BitArray_bitclear(bit_arr, 0);
-    nu_bit = BitArray_bitread(bit_arr, 0);
+    BitArray_bitclear(bit_arr, idx);
+    nu_bit = BitArray_bitread(bit_arr, idx);
     assert(nu_bit == 0);
 
     // 0 -> 0
-    BitArray_bitclear(bit_arr, 0);
-    nu_bit = BitArray_bitread(bit_arr, 0);
+    BitArray_bitclear(bit_arr, idx);
+    nu_bit = BitArray_bitread(bit_arr, idx);
     assert(nu_bit == 0);
 
     // 0 -> 1 (back to original)
-    BitArray_bitset(bit_arr, 0);
-    nu_bit = BitArray_bitread(bit_arr, 0);
+    BitArray_bitset(bit_arr, idx);
+    nu_bit = BitArray_bitread(bit_arr, idx);
     assert((og_bit & nu_bit) == 1);
     printf("✔ bit set/clear passed\n");
 }
 
 
 TEST("bits read range") {
-    int num;
+    unsigned int num;
 
     //A :=  20  18  22  22  16  21  11  22  21  21
     for (unsigned int i = 0; i < 10; ++i) {
         num = BitArray_read(bit_arr, i);
+        printf("%d, %d\n", num, A[i]);
         assert((unsigned) num == A[i]);
         // printf(" %d ", num);
     }
@@ -112,5 +110,6 @@ TEST("bits read range") {
 
 }
 
+BitArray_free(bit_arr);
 
 END_TESTING
