@@ -84,16 +84,16 @@
  *
  * @var BitArray.l 
  *  number of bits to store each value in A
- * @var BitArray.size
- *  size of each member in v
+ * @var BitArray.width
+ *  number of bits of each member in v (e.g. 32)
  * @var BitArray.v[]
  *  compressed version of A (v)
- *
  */
 typedef struct {
-  unsigned int l;       // number of bits to store each value in A
-  unsigned int size;    // size of each member in v
-  unsigned int v[];   // compressed version of A (v)
+  unsigned int l;       
+  unsigned int width;   
+  unsigned int length;
+  unsigned int v[];   
 } BitArray;
 
 
@@ -122,5 +122,6 @@ void BitArray_free(BitArray *bitarr);
  * @return          pointer to BitArray
  */
 BitArray* BitArray_init(unsigned int A[], unsigned int length, unsigned int l);
+
 
 #endif // BITARR_H_

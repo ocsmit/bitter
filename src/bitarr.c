@@ -11,7 +11,7 @@ BitArray* BitArray_calloc(unsigned int n_entries, unsigned int l)
     }
     // Set values
     bitarr->l = l;
-    bitarr->size = WORD_SIZE;
+    bitarr->width = WORD_SIZE;
     
     return bitarr;
 }
