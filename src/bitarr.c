@@ -23,7 +23,7 @@ void BitArray_free(BitArray *bitarr) {
 }
 
 
-BitArray* BitArray_init(unsigned int A[], size_t length, unsigned int l)
+BitArray* BitArray_init(unsigned int A[], unsigned int length, unsigned int l)
 {
     // Ceiling division
     unsigned int n_entries = (l * length)/WORD_SIZE + ((l*length) % WORD_SIZE != 0);

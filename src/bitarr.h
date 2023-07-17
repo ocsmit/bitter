@@ -102,6 +102,6 @@ void BitArray_free(BitArray *bitarr);
  * @param l         Maximum number of bits for each element in A
  * @return          pointer to BitArray
  */
-BitArray* BitArray_init(unsigned int A[], size_t length, unsigned int l);
+BitArray* BitArray_init(unsigned int A[], unsigned int length, unsigned int l);
 
 #endif // BITARR_H_
