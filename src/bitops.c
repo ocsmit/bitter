@@ -69,7 +69,7 @@ void BitArray_bitswrite(BitArray* bit_arr, unsigned int j1, unsigned int j, unsi
   // Confined w/in single word
   if (j1 / bit_arr->size == j / bit_arr->size) { 
     // Clear bits
-    bit_arr->v[j/bit_arr->size] &= ~(((1 << (j-j1+1)) - 1) << (j1 % bit_arr->size));
+    bit_arr->v[j/bit_arr->size] &= ~((unsigned) ((1 << (j-j1+1)) - 1) << (j1 % bit_arr->size));
     // Write x bits
     bit_arr->v[j/bit_arr->size] |= x << (j1 % bit_arr->size); 
   } else {
