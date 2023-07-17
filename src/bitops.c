@@ -19,7 +19,6 @@ unsigned int BitArray_bitread(BitArray* bit_arr, unsigned int j) {
   return (bit_arr->v[j/bit_arr->size] >> (j % bit_arr->size)) & 1;
 }
 
-
 void BitArray_bitset(BitArray* bit_arr, unsigned int j)
 {
   bit_arr->v[j/bit_arr->size] |= 1 << (j % bit_arr->size);
@@ -52,3 +51,24 @@ int BitArray_read(BitArray* bit_arr, unsigned int i)
   return BitArray_bitsread(bit_arr, i*bit_arr->l, (i+1)*bit_arr->l-1); 
 }
 
+
+void BitArray_bitswrite(BitArray* bit_arr, unsigned int j1, unsigned int j, unsigned int x)
+{
+  if (j1 > j) return;
+  unsigned int w = bit_arr->size;
+
+  // One word
+  if (j1 / bit_arr->size == j / bit_arr->size) { 
+    bit_arr->v[j/bit_arr->size] &= ~(((1 << (j-j1+1)) - 1) << (j1 % bit_arr->size));
+    bit_arr->v[j/bit_arr->size] |= x << (j1 % bit_arr->size); 
+  } else {
+    // Spans two words
+    bit_arr->v[j1/bit_arr->size] = (bit_arr->v[j1/bit_arr->size] & ((1 << (j1 % bit_arr->size)) - 1)) | (x <<  (j1 % bit_arr->size));
+    bit_arr->v[j/bit_arr->size] = (bit_arr->v[j/bit_arr->size] & ~((1 << ((j+1) % w)) - 1)) | (x >> (w - (j1 % w)));
+  }
+}
+
+void BitArray_write(BitArray* bit_arr, unsigned int i, unsigned int x)
+{
+  BitArray_bitswrite(bit_arr, i*bit_arr->l, (i+1)*bit_arr->l-1, x); 
+}

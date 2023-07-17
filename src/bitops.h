@@ -70,5 +70,27 @@ int BitArray_bitsread(BitArray* bit_arr, unsigned int j1, unsigned int j);
 int BitArray_read(BitArray* bit_arr, unsigned int i);
 
 
+/**
+ * @brief Write to range of bits
+ *
+ * Abstract function, most will want to use BitArray_write instead
+ *
+ * @param bit_arr Pointer to BitArray
+ * @param j1      Starting index for virtual bit array
+ * @param j       Ending index for virtual bit array
+ * @param x       Integer to write
+ */
+void BitArray_bitswrite(BitArray* bit_arr, unsigned int j1, unsigned int j, unsigned int x);
+
+
+
+/**
+ * @brief Write value to compact bit representation of array
+ *
+ * @param bit_arr Pointer to BitArray
+ * @param i       Index in array to write
+ * @param x       Integer to write
+ */
+void BitArray_write(BitArray* bit_arr, unsigned int i, unsigned int x);
 
 #endif // !BITOPS_H_
