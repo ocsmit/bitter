@@ -1,6 +1,4 @@
 #include "bitarr.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include "bitops.h"
 
 BitArray* BitArray_calloc(unsigned int n_entries, unsigned int l)
