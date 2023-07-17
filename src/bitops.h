@@ -53,7 +53,7 @@ void BitArray_bitclear(BitArray* bit_arr, unsigned int j);
  * @param j 
  * @return Integer constructed from bits [j1, j] 
  */
-int BitArray_bitsread(BitArray* bit_arr, unsigned int j1, unsigned int j);
+unsigned int BitArray_bitsread(BitArray* bit_arr, unsigned int j1, unsigned int j);
 
 
 /**
@@ -67,7 +67,7 @@ int BitArray_bitsread(BitArray* bit_arr, unsigned int j1, unsigned int j);
  * @param i 
  * @return Value at A[i]
  */
-int BitArray_read(BitArray* bit_arr, unsigned int i);
+unsigned int BitArray_read(BitArray* bit_arr, unsigned int i);
 
 
 /**
