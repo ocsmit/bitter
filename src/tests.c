@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "bitarr.h"
 #include "bitops.h"
+#include "bitarr_io.h"
 
 
 
@@ -95,8 +96,19 @@ TEST("bits read range") {
 
 }
 
+// TODO: Add testing for I/O
+FILE *fp = fopen("test.bin", "wb");
+BitArray_save(bit_arr, fp);
+fclose(fp);
+
+fp = fopen("test.bin", "rb");
+BitArray* bit_arr_read = BitArray_open(fp);
+fclose(fp);
+
+printf("%u\n", BitArray_read(bit_arr_read, 6));
 
 BitArray_free(bit_arr);
+
 
 
 
