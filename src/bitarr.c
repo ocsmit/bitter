@@ -1,10 +1,13 @@
 #include "bitarr.h"
 #include "bitops.h"
 
-BitArray* BitArray_calloc(unsigned int n_entries, unsigned int l)
+BitArray* BitArray_calloc(unsigned int n, unsigned int l)
 {
-    // Allocate BitArray + array on heap
-    BitArray *bitarr = calloc(1, sizeof(BitArray) + l * n_entries);
+    // Ceiling division
+    unsigned int n_entries = (l * n)/WORD_SIZE + ((l*n) % WORD_SIZE != 0);
+    
+    // space for bitarray + space needed for n_entries of word_size
+    BitArray *bitarr = calloc(1, sizeof(BitArray) + WORD_SIZE * n_entries);
     if (bitarr == NULL) {
         printf("Couldn't allocate memory for vector.\n");
         exit(EXIT_FAILURE);
@@ -12,6 +15,7 @@ BitArray* BitArray_calloc(unsigned int n_entries, unsigned int l)
     // Set values
     bitarr->l = l;
     bitarr->width = WORD_SIZE;
+    bitarr->n = n;
     
     return bitarr;
 }
@@ -21,14 +25,12 @@ void BitArray_free(BitArray *bitarr) {
 }
 
 
-BitArray* BitArray_init(unsigned int A[], unsigned int length, unsigned int l)
+BitArray* BitArray_init(unsigned int A[], unsigned int n, unsigned int l)
 {
-    // Ceiling division
-    unsigned int n_entries = (l * length)/WORD_SIZE + ((l*length) % WORD_SIZE != 0);
-    BitArray* bit_arr = BitArray_calloc(n_entries, l);
-
+    BitArray* bit_arr = BitArray_calloc(n, l);
     // Compress values from A into BitArray
     unsigned int i;
-    for (i = 0; i < length; ++i) BitArray_write(bit_arr, i, A[i]);
+    for (i = 0; i < n; ++i) BitArray_write(bit_arr, i, A[i]);
     return bit_arr;
 }
+

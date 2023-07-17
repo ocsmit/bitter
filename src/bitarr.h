@@ -64,6 +64,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+typedef enum {
+  BITARR_SUCCESS,
+  OUT_OF_BOUNDS
+} BITARR_ERROR;
+
+
 // The size of each 'word' in W is 4 bytes (32 bits)
 // sizeof(uint32_t) == sizeof(int) == (sizeof(unsigned int) * 2)
 //
@@ -86,13 +93,16 @@
  *  number of bits to store each value in A
  * @var BitArray.width
  *  number of bits of each member in v (e.g. 32)
+ * @var BitArray.n
+ *  Length of original array
  * @var BitArray.v[]
  *  compressed version of A (v)
  */
 typedef struct {
-  unsigned int l;       
-  unsigned int width;   
-  unsigned int v[];   
+  uint8_t l;       
+  uint8_t width;   
+  uint32_t n;
+  unsigned int v[]; 
 } BitArray;
 
 
@@ -116,7 +126,7 @@ void BitArray_free(BitArray *bitarr);
  * @brief Initialize and populate a BitArray on the heap from an array
  *
  * @param A         1d array
- * @param length    Length of array A
+ * @param n         Number of elements in A
  * @param l         Maximum number of bits for each element in A
  * @return          pointer to BitArray
  */
