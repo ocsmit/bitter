@@ -28,6 +28,14 @@
 #define END_TESTING return 0; }
 #define TEST(TEST_NAME) if (run_test(TEST_NAME, argc, argv))
 
+#define CHECK_EQUAL_INT(EXPECTED, ACTUAL) \
+          if (EXPECTED != ACTUAL) \
+            { \
+              fprintf (stderr, \
+                       "%s, line %d: For '%s', expected %d, got %d\n", \
+                       __FILE__, __LINE__, #ACTUAL, EXPECTED, ACTUAL); \
+            } \
+
 int run_test(const char* test_name, int argc, char **argv)
 {
   // Run all tests by default
