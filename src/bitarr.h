@@ -78,7 +78,30 @@ typedef struct {
 } BitArray;
 
 
+/**
+ * @brief Allocate empty BitArray with values set to 0 on the heap
+ *
+ * @param n_entries     Number of words to store
+ * @param l             Size in bits of each item
+ * @return              Pointer to BitArray
+ */
 BitArray* BitArray_calloc(unsigned int n_entries, unsigned int l);
+
+/**
+ * @brief Free BitArray allocated on the heap
+ *
+ * @param bitarr 
+ */
 void BitArray_free(BitArray *bitarr);
+
+/**
+ * @brief Initialize and populate a BitArray on the heap from an array
+ *
+ * @param A         1d array
+ * @param length    Length of array A
+ * @param l         Maximum number of bits for each element in A
+ * @return          pointer to BitArray
+ */
+BitArray* BitArray_init(unsigned int A[], size_t length, unsigned int l);
 
 #endif // BITARR_H_
