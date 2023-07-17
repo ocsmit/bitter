@@ -113,7 +113,7 @@ typedef struct {
  * @param l             Size in bits of each item
  * @return              Pointer to BitArray
  */
-BitArray* BitArray_calloc(unsigned int n_entries, unsigned int l);
+BitArray* BitArray_calloc(unsigned int n, unsigned int l);
 
 /**
  * @brief Free BitArray allocated on the heap

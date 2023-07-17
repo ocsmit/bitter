@@ -57,6 +57,10 @@ unsigned int BitArray_bitsread(BitArray* bit_arr, unsigned int j1, unsigned int 
 
 unsigned int BitArray_read(BitArray* bit_arr, unsigned int i)
 {
+  if (i >= bit_arr->n) {
+    fprintf(stderr, "%s:%d Out of bounds index\n", __FILE__, __LINE__);
+    exit(OUT_OF_BOUNDS);
+  }
   return BitArray_bitsread(bit_arr, i*bit_arr->l, (i+1)*bit_arr->l-1); 
 }
 
@@ -92,5 +96,9 @@ void BitArray_bitswrite(BitArray* bit_arr, unsigned int j1, unsigned int j, unsi
 
 void BitArray_write(BitArray* bit_arr, unsigned int i, unsigned int x)
 {
+  if (i >= bit_arr->n) {
+    fprintf(stderr, "%s:%d Out of bounds index\n", __FILE__, __LINE__);
+    exit(OUT_OF_BOUNDS);
+  }
   BitArray_bitswrite(bit_arr, i*bit_arr->l, (i+1)*bit_arr->l-1, x); 
 }

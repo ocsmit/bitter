@@ -3,9 +3,7 @@
 
 BitArray* BitArray_calloc(unsigned int n, unsigned int l)
 {
-    // Ceiling division
-    unsigned int n_entries = (l * n)/WORD_SIZE + ((l*n) % WORD_SIZE != 0);
-    
+    unsigned int n_entries = 1 + (((l * n) - 1) / WORD_SIZE);
     // space for bitarray + space needed for n_entries of word_size
     BitArray *bitarr = calloc(1, sizeof(BitArray) + WORD_SIZE * n_entries);
     if (bitarr == NULL) {
@@ -33,4 +31,3 @@ BitArray* BitArray_init(unsigned int A[], unsigned int n, unsigned int l)
     for (i = 0; i < n; ++i) BitArray_write(bit_arr, i, A[i]);
     return bit_arr;
 }
-
