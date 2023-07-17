@@ -92,7 +92,6 @@
 typedef struct {
   unsigned int l;       
   unsigned int width;   
-  unsigned int length;
   unsigned int v[];   
 } BitArray;
 
