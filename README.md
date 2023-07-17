@@ -4,7 +4,7 @@ Compact/succinct representations for vectors and arrays
 ## BitArray
 
 Compact bit arrays are space effecient representation of the classical array
-as described in "Compact Data Structures, a practical approach" (https://doi.org/10.1017/CBO9781316588284).
+as described in "[Compact Data Structures, a practical approach](https://doi.org/10.1017/CBO9781316588284)" .
 
 Arrays are stored in a compact form by using only the bits needed for each
 element. E.g. below the array A is shown to be stored using only two uint32
