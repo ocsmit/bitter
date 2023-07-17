@@ -22,7 +22,7 @@ unsigned int B_sig_ordered[64] = {
     0,1,0,0,1,1,0,1,1,0,1,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 
-unsigned int correct_W[2] = { 3943389760, 177586} ;
+unsigned int correct_W[2] = { 3943389780, 177586} ;
 
 
 BitArray* bit_arr = BitArray_calloc(2, 5);
@@ -34,13 +34,15 @@ TEST("BitArray calloc") {
 }
 
 TEST("bits write") {
-    unsigned int num, og;
-    for (int i = 0; i < 10; ++i) BitArray_write(bit_arr, i, A[i]);
-    for (int i = 0; i < 10; ++i) {
+    unsigned int num;
+    unsigned int i = 0;
+    for (i = 0; i < 10; ++i) BitArray_write(bit_arr, i, A[i]);
+    for (; i < 10; ++i) {
         num = BitArray_read(bit_arr, i);
         assert(num == A[i]);
     }
 
+    for (i = 0; i < 2; ++i) assert(bit_arr->v[i] == correct_W[i]);
     printf("✔ BitArray write\n");
 }
 
@@ -49,6 +51,7 @@ TEST("single bit read") {
     unsigned int b;
     for (unsigned int i = 0; i < 64; ++i) {
         b = BitArray_bitread(bit_arr, i);
+        assert(b == B_sig_ordered[i]);
     }
     printf("✔ bit read passed\n");
 }
