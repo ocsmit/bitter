@@ -58,4 +58,5 @@ be accessed first.
 for implementation and operation details see:
   - [bitarr.h](src/bitarr.h)
   - [bitops.h](src/bitops.h)
+  - [bitarr_io.h](src/bitarr_io.h)
 
