@@ -67,8 +67,8 @@
 
 typedef enum {
   BITARR_SUCCESS,
-  OUT_OF_BOUNDS,
-  FILE_ERROR
+  OUT_OF_BOUNDS,      // Indexing error
+  FILE_ERROR          // I/O Error
 } BITARR_ERROR;
 
 
