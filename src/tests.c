@@ -103,7 +103,7 @@ TEST("bits read range")
 
 TEST("Write to disk")
 {
-    FILE *fp = fopen("test.bin", "wb");
+    FILE *fp = fopen("test.bit", "wb");
     BitArray_save(bit_arr, fp);
     fclose(fp);
     printf("✔ BitArray disk write\n");
@@ -111,7 +111,7 @@ TEST("Write to disk")
 
 TEST("Read from disk")
 {
-    FILE *fp = fopen("test.bin", "rb");
+    FILE *fp = fopen("test.bit", "rb");
     BitArray* bit_arr_read = BitArray_open(fp);
     fclose(fp);
 
