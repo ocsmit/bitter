@@ -12,11 +12,7 @@ void BitArray_save(BitArray* bitarr, FILE *fp)
     fwrite(&bitarr->n, sizeof(uint32_t), 1, fp);
 
     unsigned int n_entries = 1 + (((bitarr->l * bitarr->n) - 1) / WORD_SIZE);
-    printf("%u\n", n_entries);
-    for (int i = 0; i < n_entries; ++i) {
-        printf("%u\n", bitarr->v[i]);
-        fwrite(&(bitarr->v[i]), sizeof(unsigned int), 1, fp);
-    }
+    fwrite(&(bitarr->v), sizeof(unsigned int), n_entries, fp);
 }
 
 BitArray* BitArray_open(FILE *fp)
