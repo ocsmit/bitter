@@ -28,12 +28,14 @@ unsigned int correct_W[2] = { 3943389780, 177586} ;
 BitArray* bit_arr = BitArray_init(A, (sizeof(A)/sizeof(A[0])), 5);
 
 
-TEST("BitArray calloc") {
+TEST("BitArray calloc")
+{
     assert(bit_arr != NULL);
     printf("✔ BitArray calloc\n");
 }
 
-TEST("bits write") {
+TEST("bits write")
+{
     unsigned int num;
     unsigned int i = 0;
 
@@ -47,7 +49,8 @@ TEST("bits write") {
 }
 
 
-TEST("single bit read") {
+TEST("single bit read")
+{
     unsigned int b;
     for (unsigned int i = 0; i < 64; ++i) {
         b = BitArray_bitread(bit_arr, i);
@@ -56,7 +59,8 @@ TEST("single bit read") {
     printf("✔ bit read passed\n");
 }
 
-TEST("bit set & clear") {
+TEST("bit set & clear")
+{
     unsigned int og_bit, nu_bit, idx;
     idx = 2;
     og_bit = BitArray_bitread(bit_arr, 2);
@@ -84,7 +88,8 @@ TEST("bit set & clear") {
 }
 
 
-TEST("bits read range") {
+TEST("bits read range")
+{
     unsigned int num;
 
     //A :=  20  18  22  22  16  21  11  22  21  21
@@ -96,16 +101,29 @@ TEST("bits read range") {
 
 }
 
-// TODO: Add testing for I/O
-FILE *fp = fopen("test.bin", "wb");
-BitArray_save(bit_arr, fp);
-fclose(fp);
+TEST("Write to disk")
+{
+    FILE *fp = fopen("test.bin", "wb");
+    BitArray_save(bit_arr, fp);
+    fclose(fp);
+    printf("✔ BitArray disk write\n");
+}
 
-fp = fopen("test.bin", "rb");
-BitArray* bit_arr_read = BitArray_open(fp);
-fclose(fp);
+TEST("Read from disk")
+{
+    FILE *fp = fopen("test.bin", "rb");
+    BitArray* bit_arr_read = BitArray_open(fp);
+    fclose(fp);
 
-printf("%u\n", BitArray_read(bit_arr_read, 6));
+    unsigned int num;
+    for (unsigned int i = 0; i < 10; ++i) {
+        num = BitArray_read(bit_arr_read, i);
+        assert((unsigned) num == A[i]);
+    }
+
+    BitArray_free(bit_arr_read);
+    printf("✔ BitArray disk read\n");
+}
 
 BitArray_free(bit_arr);
 
