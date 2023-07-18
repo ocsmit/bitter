@@ -25,7 +25,7 @@
 #include <string.h>
 #include "bitarr.h"
 
-static const char BIT_MAGIC_NUMBER[] = { 'B', 'I', 'T' };
+static const char BIT_MAGIC_NUMBER[] = { 'B', 'I', 'T', '\0'};
 
 /**
  * @brief Save BitArray to disk

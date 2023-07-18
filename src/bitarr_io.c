@@ -24,10 +24,10 @@ BitArray* BitArray_open(FILE *fp)
 {
     uint8_t l, width;
     uint32_t n; 
-    char magic_number[strlen(BIT_MAGIC_NUMBER)]; // 3
-    
+    char magic_number[strlen(BIT_MAGIC_NUMBER)+1];     
+
     // Verify it is a correct file
-    fread(&magic_number, sizeof(char), strlen(BIT_MAGIC_NUMBER), fp);
+    fread(magic_number, sizeof(char), strlen(BIT_MAGIC_NUMBER), fp);
     if (strcmp(magic_number, BIT_MAGIC_NUMBER) != 0) {
         fprintf(stderr, "Incorrect file, magic string does not match\n");
         exit(FILE_ERROR);

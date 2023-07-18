@@ -1,19 +1,22 @@
 #include "tests.h"
 #include "assert.h"
 #include <stdio.h>
-#include "bitarr.h"
-#include "bitops.h"
-#include "bitarr_io.h"
+#include "../src/bitarr.h"
+#include "../src/bitops.h"
+#include "../src/bitarr_io.h"
 
 
 
 BEGIN_TESTING
 
-// Data
+
+// -- Data --------------------------------------------------------------------
 unsigned int A[10] = { 20, 18, 22, 22, 16, 21, 11, 22, 21, 21 };
 
 /*
-* Both of binary representations of b have been flipped since when reading individual bits the most from array A, the least significant bit will be read first from each int.
+* Both of binary representations of b have been flipped since when reading 
+* individual bits the most from array A, the least significant bit will be read
+* first from each int.
 *
 * 394338780 := 1,1,1,0,1,0,1,1,0,0,0,0,1,0,1,1,0,1,0,1,1,0,1,0,0,1,0,1,0,1,0,0,
 * 177586    := 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,1,0,1,0,1,1,0,1,1,0,0,1,0,
@@ -22,10 +25,12 @@ unsigned int B_sig_ordered[64] = {
     0,0,1,0,1,0,1,0,0,1,0,1,1,0,1,0,1,1,0,1,0,0,0,0,1,1,0,1,0,1,1,1,
     0,1,0,0,1,1,0,1,1,0,1,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
-
 unsigned int correct_W[2] = { 3943389780, 177586} ;
-
 BitArray* bit_arr = BitArray_init(A, (sizeof(A)/sizeof(A[0])), 5);
+
+static char bit_arr_fp[] = "./data/bitarr_test.bit";
+
+// ----------------------------------------------------------------------------
 
 
 TEST("BitArray calloc")
@@ -103,7 +108,7 @@ TEST("bits read range")
 
 TEST("Write to disk")
 {
-    FILE *fp = fopen("test.bit", "wb");
+    FILE *fp = fopen(bit_arr_fp, "wb");
     BitArray_save(bit_arr, fp);
     fclose(fp);
     printf("✔ BitArray disk write\n");
@@ -111,7 +116,7 @@ TEST("Write to disk")
 
 TEST("Read from disk")
 {
-    FILE *fp = fopen("test.bit", "rb");
+    FILE *fp = fopen(bit_arr_fp, "rb");
     BitArray* bit_arr_read = BitArray_open(fp);
     fclose(fp);
 
