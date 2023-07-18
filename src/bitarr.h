@@ -113,7 +113,7 @@ typedef struct {
  * @param l             Size in bits of each item
  * @return              Pointer to BitArray
  */
-BitArray* BitArray_calloc(unsigned int n, unsigned int l);
+BitArray* BitArray_calloc(uint32_t n, uint8_t l);
 
 /**
  * @brief Free BitArray allocated on the heap
@@ -130,7 +130,7 @@ void BitArray_free(BitArray *bitarr);
  * @param l         Maximum number of bits for each element in A
  * @return          pointer to BitArray
  */
-BitArray* BitArray_init(unsigned int A[], unsigned int length, unsigned int l);
+BitArray* BitArray_init(unsigned int A[], uint32_t length, uint8_t l);
 
 
 #endif // BITARR_H_
