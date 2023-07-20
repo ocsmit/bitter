@@ -1,9 +1,12 @@
 #include "tests.h"
 #include "assert.h"
+#include <stdint.h>
 #include <stdio.h>
 #include "../src/bitarr.h"
 #include "../src/bitops.h"
 #include "../src/bitarr_io.h"
+#include "../src/encoding.h"
+
 
 
 
@@ -131,6 +134,15 @@ TEST("Read from disk")
 }
 
 BitArray_free(bit_arr);
+
+TEST("Gamma encoding")
+{
+    uint32_t og_int = 13;
+    unsigned int gc = gamma_encode(og_int);
+    gc = gamma_decode(gc);
+    assert(og_int == gc);
+    printf("✔ Gamma coding\n");
+}
 
 
 
