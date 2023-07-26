@@ -17,7 +17,7 @@
  *         │      │      │      │      │      │      │      │      │      │
  *         ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼      ▼
  *     ┌──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┐
- *  B  │10100 │10010 │10110 │10110 │10000 │10101 │01011 │10110 │10101 │10101 │ 
+ *  B  │10100 │10010 │10110 │10110 │10000 │10101 │01011 │10110 │10101 │10101 │
  *     └──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘
  *         │      │      │      │      │      │      │      │      │      │
  *         │      │      │  B is a virtual bit array │      │      │      │
@@ -63,6 +63,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 
 
 typedef enum {
@@ -72,25 +73,13 @@ typedef enum {
 } BITARR_ERROR;
 
 
-// The size of each 'word' in W is 4 bytes (32 bits)
-// sizeof(uint32_t) == sizeof(int) == (sizeof(unsigned int) * 2)
-//
-// NOTE: 
-// What is the valid type (or size) to consider as the systems word size?
-// Is it appropriate to just define the size in our implementation?
-//  - https://stackoverflow.com/q/35843365
-//  - https://stackoverflow.com/q/14792068
-//  
-//
-#define WORD_SIZE (sizeof(uint32_t) * 8)
-
 /**
  * @struct BitArray
  *
  * Compact BitArray implementation where each element in the original array (A)
  * is the same size.
  *
- * @var BitArray.l 
+ * @var BitArray.l
  *  number of bits to store each value in A
  * @var BitArray.width
  *  number of bits of each member in v (e.g. 32)
@@ -100,10 +89,10 @@ typedef enum {
  *  compressed version of A (v)
  */
 typedef struct {
-  uint8_t l;       
-  uint8_t width;   
+  size_t element_size;
+  uint8_t width;
   uint32_t n;
-  unsigned int v[]; 
+  unsigned int v[];
 } BitArray;
 
 
@@ -114,12 +103,12 @@ typedef struct {
  * @param l             Size in bits of each item
  * @return              Pointer to BitArray
  */
-BitArray* BitArray_calloc(uint32_t n, uint8_t l);
+BitArray* BitArray_calloc(uint32_t n, uint8_t element_size, size_t word_size);
 
 /**
  * @brief Free BitArray allocated on the heap
  *
- * @param bitarr 
+ * @param bitarr
  */
 void BitArray_free(BitArray *bitarr);
 
@@ -131,7 +120,8 @@ void BitArray_free(BitArray *bitarr);
  * @param l         Maximum number of bits for each element in A
  * @return          pointer to BitArray
  */
-BitArray* BitArray_init(unsigned int A[], uint32_t length, uint8_t l);
+BitArray* BitArray_init(unsigned int A[], uint32_t length, uint8_t element_size, 
+  size_t word_size);
 
 
 #endif // BITARR_H_

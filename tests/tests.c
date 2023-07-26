@@ -29,7 +29,7 @@ unsigned int B_sig_ordered[64] = {
     0,1,0,0,1,1,0,1,1,0,1,0,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };
 unsigned int correct_W[2] = { 3943389780, 177586} ;
-BitArray* bit_arr = BitArray_init(A, (sizeof(A)/sizeof(A[0])), 5);
+BitArray* bit_arr = BitArray_init(A, (sizeof(A)/sizeof(A[0])), 5, sizeof(uint32_t));
 
 static char bit_arr_fp[] = "./data/bitarr_test.bit";
 

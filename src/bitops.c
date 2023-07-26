@@ -14,7 +14,6 @@ extern inline unsigned int sig_bit_idx(unsigned int j, unsigned int word_size)
 // -- Single bit ops ----------------------------------------------------------
 
 unsigned int BitArray_bitread(BitArray* bit_arr, unsigned int j) {
-  // TODO: Add range checking
   return (bit_arr->v[j/bit_arr->width] >> (j % bit_arr->width)) & 1;
 }
 
@@ -70,7 +69,8 @@ unsigned int BitArray_read(BitArray* bit_arr, unsigned int i)
     fprintf(stderr, "%s:%d Out of bounds index\n", __FILE__, __LINE__);
     exit(OUT_OF_BOUNDS);
   }
-  return BitArray_bitsread(bit_arr, i*bit_arr->l, (i+1)*bit_arr->l-1); 
+  return BitArray_bitsread(bit_arr, i*bit_arr->element_size,
+    (i+1)*bit_arr->element_size-1); 
 }
 
 // -- Writing -----------------------------------------------------------------
@@ -115,5 +115,6 @@ void BitArray_write(BitArray* bit_arr, unsigned int i, unsigned int x)
     fprintf(stderr, "%s:%d Out of bounds index\n", __FILE__, __LINE__);
     exit(OUT_OF_BOUNDS);
   }
-  BitArray_bitswrite(bit_arr, i*bit_arr->l, (i+1)*bit_arr->l-1, x); 
+  BitArray_bitswrite(bit_arr, i*bit_arr->element_size, 
+    (i+1)*bit_arr->element_size-1, x); 
 }

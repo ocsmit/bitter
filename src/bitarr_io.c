@@ -1,8 +1,4 @@
 #include "bitarr_io.h"
-#include "bitarr.h"
-#include <stdio.h>
-#include <string.h>
-
 
 void BitArray_save(BitArray* bitarr, FILE *fp)
 {
@@ -11,12 +7,12 @@ void BitArray_save(BitArray* bitarr, FILE *fp)
     fwrite(&BIT_MAGIC_NUMBER, sizeof(char), strlen(BIT_MAGIC_NUMBER), fp);
 
     // BitArray metadata needed to construct data structure
-    fwrite(&bitarr->l, sizeof(uint8_t), 1, fp);
+    fwrite(&bitarr->element_size, sizeof(uint8_t), 1, fp);
     fwrite(&bitarr->width, sizeof(uint8_t), 1, fp);
     fwrite(&bitarr->n, sizeof(uint32_t), 1, fp);
 
     // Write out compressed array
-    unsigned int n_entries = 1 + (((bitarr->l * bitarr->n) - 1) / WORD_SIZE);
+    unsigned int n_entries = 1 + (((bitarr->element_size * bitarr->n) - 1) / bitarr->width);
     fwrite(&(bitarr->v), sizeof(unsigned int), n_entries, fp);
 }
 
@@ -37,9 +33,9 @@ BitArray* BitArray_open(FILE *fp)
     fread(&l, sizeof(uint8_t), 1, fp);
     fread(&width, sizeof(uint8_t), 1, fp);
     fread(&n, sizeof(uint32_t), 1, fp);
-    BitArray* bitarr = BitArray_calloc(n, l);
+    BitArray* bitarr = BitArray_calloc(n, l, width / CHAR_BIT);
 
     // Read in compressed array
-    fread(&(bitarr->v), WORD_SIZE, 1, fp);
+    fread(&(bitarr->v), width, 1, fp);
     return bitarr;
 }
