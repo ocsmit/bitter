@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <math.h>
+#include "bitops.h"
 
 
 

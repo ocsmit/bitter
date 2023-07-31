@@ -6,6 +6,7 @@
 #include "../src/bitops.h"
 #include "../src/bitarr_io.h"
 #include "../src/encoding.h"
+#include "../src/bitarr_vl.h"
 
 
 
@@ -15,9 +16,10 @@ BEGIN_TESTING
 
 // -- Data --------------------------------------------------------------------
 unsigned int A[10] = { 20, 18, 22, 22, 16, 21, 11, 22, 21, 21 };
+unsigned int A_vl[10] = { 0, 1, 0, 2, 5, 1, 3, 2, 8, 2 };
 
 /*
-* Both of binary representations of b have been flipped since when reading 
+* Both of binary representations of b have been flipped since when reading
 * individual bits the most from array A, the least significant bit will be read
 * first from each int.
 *
@@ -61,7 +63,7 @@ TEST("single bit read")
 {
     unsigned int b;
     for (unsigned int i = 0; i < 64; ++i) {
-        b = BitArray_bitread(bit_arr, i);
+        b = bit_read(bit_arr->v, bit_arr->width, i);
         assert(b == B_sig_ordered[i]);
     }
     printf("✔ bit read passed\n");
@@ -71,26 +73,26 @@ TEST("bit set & clear")
 {
     unsigned int og_bit, nu_bit, idx;
     idx = 2;
-    og_bit = BitArray_bitread(bit_arr, 2);
-    
+    og_bit = bit_read(bit_arr->v, bit_arr->width, idx);
+
     // 1 -> 1
-    BitArray_bitset(bit_arr, idx);
-    nu_bit = BitArray_bitread(bit_arr, idx);
+    bit_set(bit_arr->v, bit_arr->width, idx);
+    nu_bit = bit_read(bit_arr->v, bit_arr->width, idx);
     assert((og_bit & nu_bit) == 1);
 
     // 1 -> 0
-    BitArray_bitclear(bit_arr, idx);
-    nu_bit = BitArray_bitread(bit_arr, idx);
+    bit_clear(bit_arr->v, bit_arr->width, idx);
+    nu_bit = bit_read(bit_arr->v, bit_arr->width, idx);
     assert(nu_bit == 0);
 
     // 0 -> 0
-    BitArray_bitclear(bit_arr, idx);
-    nu_bit = BitArray_bitread(bit_arr, idx);
+    bit_clear(bit_arr->v, bit_arr->width, idx);
+    nu_bit = bit_read(bit_arr->v, bit_arr->width, idx);
     assert(nu_bit == 0);
 
     // 0 -> 1 (back to original)
-    BitArray_bitset(bit_arr, idx);
-    nu_bit = BitArray_bitread(bit_arr, idx);
+    bit_set(bit_arr->v, bit_arr->width, idx);
+    nu_bit = bit_read(bit_arr->v, bit_arr->width, idx);
     assert((og_bit & nu_bit) == 1);
     printf("✔ bit set/clear passed\n");
 }
@@ -142,6 +144,31 @@ TEST("Gamma encoding")
     gc = gamma_decode(gc);
     assert(og_int == gc);
     printf("✔ Gamma coding\n");
+}
+
+TEST("VL BitArray")
+{
+
+
+    uint32_t correct_W_vla[2] = { 415519957, 3 };
+    VLBitArray *vlb = VLBitArray_init(A_vl, 10, 4, sizeof(uint32_t));
+    uint32_t AA[31] = {1, 100, 200, 11, 1, 50, 1000};
+    AA[20] = 20;
+    AA[30] = 10000;
+    VLBitArray *vlb1 = VLBitArray_init(AA, 31, 30, sizeof(uint32_t));
+
+    for (size_t i = 0; i < 2; i++) {
+        assert(correct_W_vla[i] == vlb->W[i]);
+    }
+    for (size_t i = 0; i < 10; ++i) assert(A_vl[i] == VLBitArray_read(vlb, i));
+
+    VLBitArray_free(vlb);
+
+    for (size_t i = 0; i < 31; ++i) {
+        assert(AA[i] == VLBitArray_read(vlb1, i));
+    }
+
+    printf("✔ Variable Length BitArray\n");
 }
 
 

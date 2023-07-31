@@ -64,13 +64,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
+#include "bitops.h"
+#include "common.h"
 
-
-typedef enum {
-  BITARR_SUCCESS,
-  OUT_OF_BOUNDS,      // Indexing error
-  FILE_ERROR          // I/O Error
-} BITARR_ERROR;
 
 
 /**
@@ -120,8 +116,31 @@ void BitArray_free(BitArray *bitarr);
  * @param l         Maximum number of bits for each element in A
  * @return          pointer to BitArray
  */
-BitArray* BitArray_init(unsigned int A[], uint32_t length, uint8_t element_size, 
+BitArray* BitArray_init(unsigned int A[], uint32_t length, uint8_t element_size,
   size_t word_size);
 
+
+
+/**
+ * @brief Get value from original array at index i
+ *
+ * The array held within a BitArray is a compact version of the original.
+ * We can retrieve this original value by reading the bits from the range
+ * [i * l, (i+1)*l-1] in the compact array.
+ *
+ * @param bit_arr
+ * @param i
+ * @return Value at A[i]
+ */
+unsigned int BitArray_read(BitArray* bit_arr, unsigned int i);
+
+/**
+ * @brief Write value to compact bit representation of array
+ *
+ * @param bit_arr Pointer to BitArray
+ * @param i       Index in array to write
+ * @param x       Integer to write
+ */
+void BitArray_write(BitArray* bit_arr, unsigned int i, unsigned int x);
 
 #endif // BITARR_H_
